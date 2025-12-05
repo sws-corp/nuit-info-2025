@@ -14,11 +14,9 @@ function App() {
 				<Route path="/" element={<OpenningPage />} />
 				<Route path="/mission" element={<MissionPage />} />
 				<Route path="/snake" element={<SnakeLoaderPage />} />
-
 				<Route path="/chatbot" element={<PowerOnSelfTestPage />} />
 				<Route path="/chatbot/loader" element={<WindowsXpLoaderPage />} />
 				<Route path="/chatbot/desktop" element={<WindowsXpDesktopPage />} />
-
 				<Route path="/crazyform" element={<CrazyForm/>}/>
 			</Routes>
 		</BrowserRouter>
