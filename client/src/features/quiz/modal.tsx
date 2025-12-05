@@ -90,23 +90,23 @@ export function TestGafamModal({ onClose }: TestGafamModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md overflow-hidden rounded-xl border border-slate-700 bg-slate-900 shadow-xl">
-        {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-800 px-4 py-3">
-          <h2 className="flex items-center gap-2 text-sm font-medium text-slate-200">
-            <ClipboardList size={16} className="text-slate-400" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
+      <div className="w-full max-w-md overflow-hidden border-2 border-white bg-black shadow-none">
+        
+        <div className="flex items-center justify-between border-b-2 border-white px-4 py-3">
+          <h2 className="flex items-center gap-2 text-sm font-medium text-white">
+            <ClipboardList size={16} className="text-white" />
             Test d'indépendance numérique
           </h2>
           <button
             onClick={onClose}
-            className="rounded p-1 text-slate-500 transition-colors hover:bg-slate-800 hover:text-slate-300"
+            className="p-1 text-white transition-colors hover:bg-white hover:text-black"
           >
             <X size={18} />
           </button>
         </div>
 
-        {/* Content */}
+        
         <div className="max-h-[75vh] overflow-y-auto">
           {!isFinished ? (
             <div className="p-4">

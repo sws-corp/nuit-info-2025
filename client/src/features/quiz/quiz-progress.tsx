@@ -8,13 +8,13 @@ export function QuizProgress({ current, total }: QuizProgressProps) {
 
   return (
     <div className="mb-6">
-      <div className="mb-2 flex items-center justify-between text-sm text-slate-400">
+      <div className="mb-2 flex items-center justify-between text-sm text-black">
         <span>{current + 1} sur {total}</span>
         <span>{Math.round(percentage)}%</span>
       </div>
-      <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-700">
+      <div className="h-1.5 w-full border border-black bg-white">
         <div
-          className="h-full bg-slate-400 transition-all duration-300 ease-out"
+          className="h-full bg-black transition-all duration-300 ease-out"
           style={{ width: `${percentage}%` }}
         />
       </div>

@@ -82,45 +82,45 @@ export function QuizCard({ question, onAnswer }: QuizCardProps) {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <div className="relative overflow-hidden rounded-xl border border-slate-700 bg-slate-800 shadow-lg">
-          {/* Subtle background gradient on swipe */}
+        <div className="relative overflow-hidden border-2 border-black bg-white">
+          
           <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-emerald-900/40"
-            style={{ opacity: yesProgress }}
+            className="pointer-events-none absolute inset-0 bg-gray-200"
+            style={{ opacity: yesProgress * 0.5 }}
           />
           <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-red-900/40"
-            style={{ opacity: noProgress }}
+            className="pointer-events-none absolute inset-0 bg-gray-300"
+            style={{ opacity: noProgress * 0.5 }}
           />
 
-          {/* Content */}
+          
           <div className="relative z-10 p-6">
-            {/* Question */}
-            <p className="text-center text-base leading-relaxed text-slate-100 md:text-lg">
+            
+            <p className="text-center text-base leading-relaxed text-black md:text-lg">
               {question.question}
             </p>
           </div>
 
-          {/* Bottom bar */}
-          <div className="flex items-center justify-between border-t border-slate-700 bg-slate-850 px-4 py-3">
+          
+          <div className="flex items-center justify-between border-t-2 border-black bg-white px-4 py-3">
             <div 
               className="flex items-center gap-2 text-sm transition-colors"
-              style={{ color: noProgress > 0.3 ? "#f87171" : "#64748b" }}
+              style={{ color: noProgress > 0.3 ? "#000" : "#666" }}
             >
-              <span className="flex h-6 w-6 items-center justify-center rounded-full border border-current text-xs">✗</span>
+              <span className="flex h-6 w-6 items-center justify-center border-2 border-current text-xs">✗</span>
               <span>Non</span>
             </div>
             
-            <div className="text-xs text-slate-500">
+            <div className="text-xs text-gray-500">
               {showHint && !isDragging ? "← glisser →" : ""}
             </div>
             
             <div 
               className="flex items-center gap-2 text-sm transition-colors"
-              style={{ color: yesProgress > 0.3 ? "#4ade80" : "#64748b" }}
+              style={{ color: yesProgress > 0.3 ? "#000" : "#666" }}
             >
               <span>Oui</span>
-              <span className="flex h-6 w-6 items-center justify-center rounded-full border border-current text-xs">✓</span>
+              <span className="flex h-6 w-6 items-center justify-center border-2 border-current text-xs">✓</span>
             </div>
           </div>
         </div>
