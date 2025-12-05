@@ -6,6 +6,7 @@ import { PowerOnSelfTestPage } from "./features/chatbot/scenes/power-on-self-tes
 import { WindowsXpLoaderPage } from "./features/chatbot/scenes/windows-xp-loader";
 import { WindowsXpDesktopPage } from "./features/chatbot/scenes/windows-xp-desktop";
 import { CrazyForm } from "./features/crazyform/main"
+import { FemmeInformatique } from "./features/femme/main";
 
 function App() {
 	return (
@@ -18,6 +19,8 @@ function App() {
 				<Route path="/chatbot/loader" element={<WindowsXpLoaderPage />} />
 				<Route path="/chatbot/desktop" element={<WindowsXpDesktopPage />} />
 				<Route path="/crazyform" element={<CrazyForm/>}/>
+				<Route path="/femmeetinfo" element={<FemmeInformatique/>}/>
+
 			</Routes>
 		</BrowserRouter>
 	);
