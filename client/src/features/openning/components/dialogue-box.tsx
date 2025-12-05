@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 const MESSAGES = [
     "Défaillance du système...",
@@ -9,76 +9,108 @@ const MESSAGES = [
 ];
 
 export function DialogueBox() {
-    const [displayText, setDisplayText] = useState("");
+    const [displayedText, setDisplayedText] = useState("");
     const [messageIndex, setMessageIndex] = useState(0);
-    const [charIndex, setCharIndex] = useState(0);
-    const [isDeleting, setIsDeleting] = useState(false);
+    const [isTyping, setIsTyping] = useState(true);
 
     useEffect(() => {
-        const currentMessage = MESSAGES[messageIndex];
+        setDisplayedText("");
+        setIsTyping(true);
 
-        const timeout = setTimeout(
-            () => {
-                if (isDeleting) {
-                    if (charIndex > 0) {
-                        setDisplayText(currentMessage.substring(0, charIndex - 1));
-                        setCharIndex((prev) => prev - 1);
-                    } else {
-                        setIsDeleting(false);
-                        setMessageIndex((prev) => (prev + 1) % MESSAGES.length);
-                    }
-                } else {
-                    if (charIndex < currentMessage.length) {
-                        setDisplayText(currentMessage.substring(0, charIndex + 1));
-                        setCharIndex((prev) => prev + 1);
-                    } else {
-                        setTimeout(() => setIsDeleting(true), 1500);
-                    }
-                }
-            },
-            isDeleting ? 30 : charIndex === currentMessage.length ? 1500 : 80
-        );
+        let index = 0;
+        const text = MESSAGES[messageIndex];
 
-        return () => clearTimeout(timeout);
-    }, [charIndex, isDeleting, messageIndex]);
+        const interval = setInterval(() => {
+            if (index < text.length) {
+                setDisplayedText(text.substring(0, index + 1));
+                index++;
+            } else {
+                setIsTyping(false);
+                clearInterval(interval);
+
+                // Move to next message after delay
+                setTimeout(() => {
+                    setMessageIndex((prev) => (prev + 1) % MESSAGES.length);
+                }, 2000);
+            }
+        }, 50);
+
+        return () => clearInterval(interval);
+    }, [messageIndex]);
+
+    const handleClick = useCallback(() => {
+        if (isTyping) {
+            setDisplayedText(MESSAGES[messageIndex]);
+            setIsTyping(false);
+        } else {
+            setMessageIndex((prev) => (prev + 1) % MESSAGES.length);
+        }
+    }, [isTyping, messageIndex]);
 
     return (
- 
-        <div className="absolute bottom-0 left-0 right-0 z-50 flex justify-center bg-gradient-to-t from-black/80 to-transparent p-2 md:p-6">
-            <div className="flex w-full max-w-4xl flex-col overflow-hidden rounded-lg border-4 border-slate-600 bg-slate-900 shadow-2xl md:flex-row">
-                <div className="flex h-32 w-full shrink-0 pixelated items-end object-contain justify-center border-b-4 border-slate-700 md:h-auto md:w-48 md:border-b-0 md:border-r-4">
-                    <img src="/tux/tux.png" alt="Tux" className="h-24 w-24 md:h-32 md:w-32" />
+        <div className="absolute inset-x-0 bottom-0 z-50 flex justify-center p-4 md:p-6">
+            {/* Background gradient */}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+
+            <div
+                className="relative flex w-full max-w-4xl cursor-pointer flex-col border-2 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:flex-row"
+                onClick={handleClick}
+            >
+                {/* Portrait section */}
+                <div className="relative flex h-28 w-full shrink-0 items-center justify-center border-b-2 border-black bg-neutral-100 md:h-auto md:w-36 md:border-b-0 md:border-r-2">
+                    <div className="relative z-10">
+                        <img
+                            src="/tux/tux.png"
+                            alt="Tux"
+                            className="h-20 w-20 object-contain"
+                        />
+                    </div>
                 </div>
 
-                <div className="flex flex-1 flex-col justify-between p-4 md:p-6">
+                {/* Content section */}
+                <div className="flex flex-1 flex-col justify-between p-4 md:p-5">
                     <div>
-                        <h3 className="mb-2 font-mono text-sm font-bold uppercase tracking-widest text-blue-400">
-                            Tux
-                        </h3>
-                        <p className="min-h-[80px] text-base font-medium leading-relaxed text-slate-200 md:text-lg">
-                            <span>{displayText}</span>
-                            <span className="cursor ml-1 animate-blink text-yellow-400">|</span>
+                        <div className="mb-3 flex items-center gap-3">
+                            <h3 className="text-sm font-bold uppercase tracking-widest text-black">
+                                Tux
+                            </h3>
+                            <span className="border border-black px-2 py-0.5 text-xs font-medium text-black">
+                                GUIDE
+                            </span>
+                        </div>
+
+                        {/* Message text */}
+                        <p className="min-h-16 text-base leading-relaxed text-neutral-700 md:text-lg">
+                            <span>{displayedText}</span>
+                            {isTyping && (
+                                <span className="ml-1 inline-block h-5 w-0.5 animate-pulse bg-black" />
+                            )}
                         </p>
                     </div>
-                    
-                    <a
-                        href="/mission"
-                        className="mt-4 self-end rounded-lg border-2 border-yellow-500 bg-yellow-500/20 px-6 py-2 font-mono text-sm font-bold uppercase tracking-wider text-yellow-400 transition-all duration-200 hover:scale-105 hover:bg-yellow-500/40 active:scale-95"
-                    >
-                        Commencer la mission
-                    </a>
+
+                    {/* Action section */}
+                    <div className="mt-4 flex flex-wrap gap-3">
+                        {!isTyping && (
+                            <a
+                                href="/mission"
+                                onClick={(e) => e.stopPropagation()}
+                                className="border-2 border-black bg-neutral-100 px-4 py-2.5 font-medium text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all duration-150 hover:bg-black hover:text-white active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+                            >
+                                Commencer la mission
+                            </a>
+                        )}
+
+                        {isTyping && (
+                            <div className="flex items-center gap-2 text-sm text-neutral-500">
+                                <span className="animate-bounce">↓</span>
+                                <span className="animate-pulse">
+                                    Cliquez pour continuer...
+                                </span>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
-
-            <style>{`
-                @keyframes blink {
-                    0%, 50% { opacity: 1; }
-                    51%, 100% { opacity: 0; }
-                }
-                .animate-blink {
-                    animation: blink 1s infinite;
-                }
-            `}</style>
         </div>
     );
 }
